@@ -1,16 +1,50 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 이현용
-  Date: 2019-07-04
-  Time: 오전 10:49
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>HYHB</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-${ko}test
+<script type="text/javascript">
+    function doExcelUploadProcess(){
+        var f = new FormData(document.getElementById('form1'));
+        $.ajax({
+            url: "uploadExcelFile",
+            data: f,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function(data){
+                console.log(data);
+                document.getElementById('result').innerHTML = JSON.stringify(data);
+            }
+        });
+    }
+
+    function doExcelDownloadProcess(){
+        var f = document.form1;
+        f.action = "downloadExcelFile";
+        f.submit();
+    }
+
+    function doExcelChangeProcess(){
+        if(document.getElementById('fileInput').files.length <= 0){
+            alert("등록할 파일을 선택해 주세요");
+        }else{
+            var f = document.form1;
+            f.action = "doExcelChangeFile";
+            f.submit();
+        }
+
+    }
+</script>
+<form id="form1" name="form1" method="post" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="fileInput">
+    <br/><br/><button type="button" onclick="doExcelUploadProcess()">엑셀업로드 작업</button>
+    <br/><br/><button type="button" onclick="doExcelDownloadProcess()">엑셀다운로드 작업</button>
+    <br/><br/><button type="button" onclick="doExcelChangeProcess()">엑셀 제목 변경 작업</button>
+</form>
+<div id="result">
+</div>
 </body>
 </html>
